@@ -1,0 +1,7 @@
+flask==2.2.5
+inflection==0.5.1
+numpy==1.26.4
+pandas==2.2.1
+pickleshare==0.7.5
+scikit-learn==1.4.2
+category-encoders==2.5.0
