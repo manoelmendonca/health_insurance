@@ -628,4 +628,4 @@ Additionally, the original Portuguese version of this text was prepared without 
 3. Book: *Python for Finance Cookbook*, Erik Lewinson, 2nd edition, 2022.
 4. Book: *Machine Learning Bootcamp - Build a portfolio of real-life projects*, Alexey Grigorev, 2021.
 5. Flask library documentation, available at https://flask.palletsprojects.com/en/2.3.x/api/#flask.Blueprint.route, accessed on February 8, 2024.
-6. I thank Éderson André de Souza for the encouragement and for suggesting a more rigorous adjustment of the RBF function parameters, in order to avoid possible data leakage, as per his comments in this [post](https://www.linkedin.com/posts/manoelmendonca-eng-adv_mais-um-projeto-de-ci%C3%AAncia-de-dados-conclu%C3%ADdo-activity-7240429424578359297-35bd?utm_source=share&utm_medium=member_desktop).
+6. I would like to thank everyone who provided improvement suggestions, as mentioned in the comments on this [post](https://www.linkedin.com/posts/manoelmendonca-eng-adv_mais-um-projeto-de-ci%C3%AAncia-de-dados-conclu%C3%ADdo-activity-7240429424578359297-35bd?utm_source=share&utm_medium=member_desktop).
