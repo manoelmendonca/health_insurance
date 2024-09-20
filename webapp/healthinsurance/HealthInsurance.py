@@ -25,8 +25,8 @@ class HealthInsurance:
         #self.home_path = 'C:/MeusEstudos/CURSOS TI/Em 2023 - ComunidadeDS/Projetos do Aluno/PA.04 health_insurance_priv/webapp/models/'
         # variáveis utilizadas na versão "atual": ver método "DataTransforming"
         self.age_scaler                       = pickle.load( open( self.home_path + 'age_scaler.pkl', 'rb' ) )
-        self.age_rbf_23_scaler                = pickle.load( open( self.home_path + 'age_rbf_23_scaler.pkl', 'rb' ) )
-        self.age_rbf_43_scaler                = pickle.load( open( self.home_path + 'age_rbf_43_scaler.pkl', 'rb' ) )
+        self.age_rbf_24_scaler                = pickle.load( open( self.home_path + 'age_rbf_24_scaler.pkl', 'rb' ) )
+        self.age_rbf_44_scaler                = pickle.load( open( self.home_path + 'age_rbf_44_scaler.pkl', 'rb' ) )
         self.annual_premium_scaler            = pickle.load( open( self.home_path + 'annual_premium_scaler.pkl', 'rb' ) )
         self.annual_premium_scaler_f1         = pickle.load( open( self.home_path + 'annual_premium_scaler_f1.pkl', 'rb' ) )
         self.annual_premium_scaler_f2         = pickle.load( open( self.home_path + 'annual_premium_scaler_f2.pkl', 'rb' ) )
@@ -46,7 +46,9 @@ class HealthInsurance:
         return df1
 
     def feature_engineering( self, df3 ):
-        # 3.1. Create Features
+        # 3.2. Create Features
+
+        # Simple conversion of "vehicle_damage", "vehicle_age" and "annual_premium"
 
         # vehicle damage number
         df3['vehicle_damage'] = df3['vehicle_damage'].apply( lambda x: 1 if x == 'Yes' else 0 )
@@ -62,7 +64,7 @@ class HealthInsurance:
         #    - feature.3: values above previous limits, others =ZERO
         df3['annual_premium_f1'] = df3['annual_premium'].apply( lambda x: 0.0 if x>2675.0 else x )
         df3['annual_premium_f2'] = df3['annual_premium'].apply( lambda x: x if x>2675.0 and x<74301.0 else 0.0 )
-#       df3['annual_premium_f3'] = df3['annual_premium'].apply( lambda x: 0.0 if x<74301.0 else x )
+        df3['annual_premium_f3'] = df3['annual_premium'].apply( lambda x: 0.0 if x<74301.0 else x )
 
         return df3
 
@@ -79,11 +81,6 @@ class HealthInsurance:
         # region_code: encoding
         out_df = self.looe_region_code_scaler.transform(out_df)
 
-        # age: rescaling
-        out_df['age_rbf_23'] = out_df['age'].map(self.age_rbf_23_scaler)
-        out_df['age_rbf_43'] = out_df['age'].map(self.age_rbf_43_scaler)
-        out_df['age'] = self.age_scaler.transform(out_df[['age']].values)
-        
         # annual_premium: standardization
         out_df['annual_premium'] = self.annual_premium_scaler.transform(out_df[['annual_premium']].values)
         out_df['annual_premium_f1'] = self.annual_premium_scaler_f1.transform(out_df[['annual_premium_f1']].values)
@@ -93,6 +90,11 @@ class HealthInsurance:
         # policy_sales_channel: encoding
         out_df['policy_sales_channel_importance'] = out_df['policy_sales_channel'].map(self.policy_sales_chn_importance_dict)
         out_df['policy_sales_channel'] = out_df['policy_sales_channel'].map(self.fe_policy_sales_channel_scaler)
+
+        # age: rescaling
+        out_df['age_rbf_24'] = out_df['age'].map(self.age_rbf_24_scaler)
+        out_df['age_rbf_44'] = out_df['age'].map(self.age_rbf_44_scaler)
+        out_df['age'] = self.age_scaler.transform(out_df[['age']].values)
 
         # vehicle_age: encoding
         ohe = self.ohe_vehicle_age.transform(out_df[['vehicle_age']])
@@ -116,13 +118,14 @@ class HealthInsurance:
         # 6.3. Resampling: nop
 
         # 7.6. Manual feature selection
-        cols_selected = ['age', 'age_rbf_23',
-                         'age_rbf_43', 'annual_premium', 'annual_premium_f1', 
+        cols_selected = ['age_rbf_24',
+                        # 'age', 'age_rbf_44', 'vehicle_age_over_2_years',
+                         'annual_premium', 'annual_premium_f1',
                          'annual_premium_f2', 'driving_license',
-                         'gender_Female', 'gender_Male', 'policy_sales_channel', 
-                         'policy_sales_channel_importance', 'previously_insured',  
-                         'region_code', 'vehicle_age_bellow_1_year', 
-                         #'vehicle_age_between_1_2_years', 'vehicle_age_over_2_years', 
+                         'gender_Female', 'gender_Male', 'policy_sales_channel',
+                         'policy_sales_channel_importance', 'previously_insured',
+                         'region_code', 'vehicle_age_bellow_1_year',
+                         'vehicle_age_between_1_2_years',
                          'vehicle_damage', 'vintage']
 
         return df6[ cols_selected ]
@@ -130,7 +133,7 @@ class HealthInsurance:
     def get_prediction( self, model, original_data, test_data ):
 
         # DEBUG
-        test_data.to_csv('test_data.csv', index=False)
+        #test_data.to_csv('test_data.csv', index=False)
 
         # model prediction
         pred = model.predict_proba( test_data )

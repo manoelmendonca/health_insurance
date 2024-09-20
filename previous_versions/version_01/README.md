@@ -11,7 +11,7 @@ ESTRATÉGIA DE VENDA-CRUZADA DE SEGUROS<br>
 
 O que é este trabalho? O desafio é criar um método inteligente para selecionar os clientes mais propensos a comprar um novo produto de uma empresa seguradora. Trata-se portanto da análise de um caso de negócio, com o foco em aumentar a receita da empresa, bem assim atender as principais questões da equipe de negócio.
 
-Conforme será apresentado ao longo do trabalho, com o uso do presente projeto foi possível aumentar o desempenho da campanha de vendas em aproximadamente 141%, com aumento estimado de mais de 180% no faturamento, representando incremento absoluto no faturamento da ordem de $ 140 milhões.
+Conforme será apresentado ao longo do trabalho, com o uso do presente projeto foi possível aumentar o desempenho da campanha de vendas em aproximadamente 182%, com aumento estimado de mais de 200% no faturamento, representando incremento absoluto no faturamento da ordem de $ 158 milhões.
 
 Este projeto se baseia em um caso fictício, e faz uso de uma base de dados do [Kaggle](https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction). Ressalte-se, no entanto, que o FOCO PRINCIPAL não é apenas a criação de uma solução de <i>machine learning</i> para uma competição de ciência de dados, mas a análise do negócio como um todo, buscando compreender os aspectos que impactam no desempenho, com vistas ao aumento da receita e da lucratividade da empresa.
 
@@ -126,7 +126,7 @@ Há ainda disponível o arquivo TEST.CSV, com formato semelhante ao apresentado 
 
 # 6. PREPARAÇÃO DOS DADOS
 
-Na inspeção inicial não foi identificada a ocorrência de dados faltantes (NaN). Por outro lado, foram realizadas conversões de alguns atributos, criação de alguns outros atributos, e realizados procedimentos de codificação ("<i>encodings</i>") de outros (seções 3.1 e 3.2 do código). Detalhes a seguir.
+Na inspeção inicial não foi identificada a ocorrência de dados faltantes (NaN). Por outro lado, foram realizadas conversões de alguns atributos, criação de alguns outros atributos, e realizados procedimentos de codificação ("<i>encodings</i>") de outros (seções 3.1, 6.2 e 6.3 do código). Detalhes a seguir.
 
 ## 6.1. Conversões simples de variáveis categóricas
 
@@ -136,51 +136,47 @@ Tratam-se aqui de conversões baseadas apenas na informação contida no própri
 - A variável "vehicle_age" teve suas categorias renomeadas de ""> 2 Years" para "over_2_years", de "1-2 Years" para "between_1_2_years e de "< 1 Year" para "bellow_1_year".
 - A variável "annual_premium" foi dividida em três faixas, criando-se as novas variáveis "annual_premium_f1", "annual_premium_f2" e "annual_premium_f3".
 
-O código Python para essas conversões pode ser consultado no método simple_conversion_of_categorical_features(), na seção 3.1 do código.
 
 ## 6.2. Distribuição bimodal da variável "age"
 
-Tanto na análise descritiva inicial (seção 1.3.2 do código) quanto na análise exploratória (EDA, seção 5.1.1 do código) foi observado que distribuição da variável "age" indicava a existência de dois modos, centrados em torno dos 23-24 anos e dos 43-44 anos. Assim, foram acrescentadas duas novas variáveis para representar a similaridade entre a idade do cliente e cada um daqueles modos. A similaridade foi computada utilizando RBF - <i>radial basis function</i> (Géron<sup>2</sup>, pag. 77-78) para criação das variáveis "age_rbf_23" e "age_rbf_43". O código e o resultado são ilustrados a seguir.
+Tanto na análise descritiva inicial (seção 1.3.2 do código) quanto na análise exploratória (EDA, seção 5.1.1 do código) foi observado que distribuição da variável "age" indicava a existência de dois modos, centrados aos 23 anos e 43 anos. Assim, foram acrescentadas duas novas variáveis para representar a similaridade entre a idade do cliente e cada um daqueles modos. A similaridade foi computada utilizando RBF - <i>radial basis function</i> (Géron<sup>2</sup>, pag. 77-78) para criação das variáveis "age_rbf_23" e "age_rbf_43". O código e o resultado são ilustrados a seguir.
 
 ```python
-centers = [24, 44]
+centers = [23, 43]
 
-rbf_24 = rbf_kernel(df3[['age']], [[centers[0]]], gamma=0.030 )
-rbf_44 = rbf_kernel(df3[['age']], [[centers[1]]], gamma=0.015 )
+rbf_23 = rbf_kernel(df3[['age']], [[centers[0]]], gamma=0.030 )
+rbf_43 = rbf_kernel(df3[['age']], [[centers[1]]], gamma=0.015 )
 
-df3['age_rbf_24'] = rbf_24
-df3['age_rbf_44'] = rbf_44
+df3['age_rbf_23'] = rbf_23
+df3['age_rbf_43'] = rbf_43
 ```
 
 Os valores de gamma podem ser obtidos por otimização, no entanto, no presente caso, esses valores foram obtidos por tentativa e erro usando o gráfico.
 
 ![banner](img/variavel_age_rbf.png)
 
-O procedimento trouxe bom resultado, visto que, tanto na etapa de avaliação de correlações (seção 5.1.1 do código) quanto na etapa de teste de importância das variáveis (seção 7), "age_rbf_24" e "age_rbf_44" mostraram-se importantes. Sobre isso, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-radialbasisfunction-activity-7234892553542672385-gukQ?utm_source=share&utm_medium=member_desktop). À epoca da postagem, parecia apropriado utilizar apenas a variável "age_rbf_43", bem assim as modas em 23 e 43. Com a evolução do trabalho e graças a sugestão apresentada<sup>6</sup>, o resultado foi dado pela utilização de ambas as variáveis e com ajuste nas modas.
+O procedimento trouxe bom resultado, visto que, na etapa de teste de importância das variáveis (seção 7 do código), "age_rbf_23" e "age_rbf_43" mostraram-se especialmente importantes. Sobre isso, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-radialbasisfunction-activity-7234892553542672385-gukQ?utm_source=share&utm_medium=member_desktop). À epoca da postagem, parecia apropriado utilizar apenas a variável "age_rbf_43". Com a evolução do projeto, o resultado foi dado pela utilização de ambas.
 
-No caso dessas variáveis criadas usando RBF, por fazerem uso de informação de toda a distribuição, foi necessário cuidar para a não ocorrência de <i>data leakage</i>. A definição das modas foi realizada pela observação dos dados de treino, a partir daí aplicando o resultado nos conjuntos de validação e teste. Esse procedimento foi embutido em um objeto criado para essa finalidade (classe DataFitAndTransform, seção 3.1 do código) e usado nos testes de validação cruzada e no teste final do modelo.
+No caso dessas variáveis criadas usando RBF, por fazerem uso de informação de toda a distribuição, foi necessário cuidar para a não ocorrência de <i>data leakage</i>, fazendo seu ajuste nos dados de treino e aplicando o resultado nos conjuntos de validação e teste. Essa providência foi embutida em um objeto criado para essa finalidade (classe DataFitAndTransform, seção 6.1 do código) e usado nos testes de validação cruzada e no teste final do modelo.
 
 
 ## 6.3. Codificação em frequencia da variável "policy_sales_channel"
 
-Trata-se de variável categórica com 155 classes (seção 1.1 do código), formadas por dados anonimizados e convertidos em números, sem maiores explicações. Provavelmente, as classes mais importantes entre essas 155 terão ocorrência mais frequente, daí a utilização de <i>frequency encoding</i> para a criação da variável "policy_sales_channel_importance".
+Trata-se de variável categórica com 155 classes, formadas por dados anonimizados e convertidos em números, sem maiores explicações. Provavelmente, as classes mais importantes entre essas 155 terão ocorrência mais frequente, daí a utilização de <i>frequency encoding</i> para a criação da variável "policy_sales_channel_importance".
 
 ```python
-#.......... Policy Sales Channel
-aux = out_df.loc[:, ['policy_sales_channel', 'id'] ].groupby('policy_sales_channel').count().reset_index()
-aux['policy_sales_channel_importance'] = aux['id'] / aux['id'].max()
-self.policy_sales_channel_importance_dict = 
-    aux.set_index('policy_sales_channel')['policy_sales_channel_importance'].to_dict()
-out_df['policy_sales_channel_importance'] = 
-    out_df['policy_sales_channel'].map(self.policy_sales_channel_importance_dict)
-
-self.fe_policy_sales_channel = out_df.groupby('policy_sales_channel').size() / len(out_df)
-out_df['policy_sales_channel'] = out_df['policy_sales_channel'].map(self.fe_policy_sales_channel)
+# compute KPI
+# Policy Sales Channel Importance = (N# of regs by channel) / (Total N# of regs)
+aux = df3.loc[:, ['policy_sales_channel', 'id'] ].groupby('policy_sales_channel').count().reset_index()
+maxval = aux['id'].max()
+aux['policy_sales_channel_importance'] = aux['id'] / maxval
+aux = aux.drop(columns=['id'])
+# include it in df3
+df3 = pd.merge( df3, aux, on='policy_sales_channel', how="left" )
 ```
 
-Esse processamento é parte do método DataFitting() (seção 3.1 do código), construído para evitar <i>data leakage</i>.
+Esse processamento foi incluído na nossa classe DataFitAndTransform (seção 6.1 do código) para evitar <i>data leakage</i>.
 
-Observe-se que após separar a base de testes (seção 1.2), foi possível constatar que, nos dados restantes de treino+validação, a variável "policy_sales_channel" continha apenas 152 classes (seção 1.3.3).
 
 ## 6.4. Codificação das demais variáveis
 
@@ -194,7 +190,6 @@ A variável numérica "annual_premium" e suas derivadas "annual_premium_f1", "an
 
 As variáveis "age" e "vintage" foram convertidas com MaxMinScaler(), de modo a ficarem limitadas aos limites entre zero e 1, mas sem mudar o formato de suas distribuições originais.
 
-Todo esse código consta dos métodos DataFitting() e DataTransforming (seção 3.1 do código), construídos para evitar <i>data leakage</i>.
 
 ## 6.5. Importância relativa das variáveis
 
@@ -202,11 +197,11 @@ Neste quesito procuramos testar muitas técnicas (seção 7 do código). Algumas
 
 Usamos o clássico Boruta em duas versões, uma vez usando como estimador o ExtraTrees e de outra vez usando o LightGBM. Ambos os casos apontaram para o descarte de "driving_license", sendo que com LightGBM foram indicadas outras 3 para descarte.
 
-Outro clássico consiste em utilizar o parâmetro "feature_importances_" dos algoritmos em árvore (Géron<sup>2</sup>, pag. 221). Assim, utilizamos essa técnica também em duas versões, com ExtraTrees e com LightGBM. O resultado foi curioso já que algumas variáveis receberam classificações totalmente divergentes, conforme ressaltado na figura abaixo:
+Outro clássico é utilizar o parâmetro "feature_importances_" dos algoritmos em árvore (Géron<sup>2</sup>, pag. 221). Assim, utilizamos essa técnica também em duas versões, com ExtraTrees e com LightGBM. O resultado foi curioso já que algumas variáveis receberam classificações totalmente divergentes, conforme ressaltado na figura abaixo:
 
 ![banner](img/feature_importance_2trees.png)
 
-Na verdade, é compreensível que nem todas as variáveis mais apropriadas em um algoritmo venham a ser igualmente apropriadas nos demais algoritmos. Assim, na falta de uma indicação conclusiva para decidir quanto à importância das variáveis para o algoritmo escolhido, e pelo fato de o algoritmo de regressão logística não possuir o parâmetro "feature_importances_", partimos para a força bruta, e codificamos um <i>loop</i> para exclusão gradual de variáveis (seção 7.5 do código), na forma:
+Na verdade, é compreensível que nem todas as variáveis mais apropriadas em um algoritmo venham a ser igualmente apropriadas nos demais algoritmos. Assim, na falta de uma indicação conclusiva para decidir quanto à importância das variáveis para o algoritmo escolhido, partimos para a força bruta, e codificamos um <i>loop</i> para exclusão gradual de variáveis (seção 7.5 do código), na forma:
 
 ```python
 for i in range( len( cols_selected_boruta ) ):
@@ -214,13 +209,14 @@ for i in range( len( cols_selected_boruta ) ):
     ...
 ```
 
-Esse procedimento de exclusão gradual (ou "<i>Recursive Feature Elimination</i>") foi aplicado repetidamente ao modelo de melhor desempenho - LogisticRegression - de modo a aprimorá-lo pela retirada de variáveis que não contribuiam para o resultado, ou mesmo que o pioravam. Desse modo, na primeira versão do *notebook* foram excluídas as variáveis "vehicle_age_over_2_years" e "vehicle_age_between_1_2_years", e na atual versão dois foram excluídas "age", "age_rbf_44" e "vehicle_age_over_2_years", levando a melhoria dos indicadores <i>Precision</i>, <i>Recall</i> e F1. Sobre esse assunto, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-featureselection-activity-7236360978865545219--TO_?utm_source=share&utm_medium=member_desktop).
+Esse procedimento de exclusão gradual (ou "<i>Recursive Feature Elimination</i>") foi aplicado repetidamente ao modelo de melhor desempenho - LogisticRegression - de modo a aprimorá-lo pela retirada de variáveis que não contribuiam para o resultado, ou mesmo que o pioravam. Desse modo, foram excluídas as variáveis "vehicle_age_over_2_years" e "vehicle_age_between_1_2_years", levando a melhoria significativa dos indicadores <i>Precision</i>, <i>Recall</i> e F1. Sobre esse assunto, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-featureselection-activity-7236360978865545219--TO_?utm_source=share&utm_medium=member_desktop).
+
 
 ## 6.6. Fluxo para transformação e ajuste de dados (*pipeline*)
 
 Durante o desenvolvimento do projeto, a criação de variáveis, sua transformação e codificação foi se avolumando. Ao mesmo tempo, todo esse conjunto de transformações precisava ser (i) realizado sempre numa mesma ordem e (ii) aplicado em diferentes fases do processamento. Por exemplo, as transformações precisavam ser aplicadas tanto para manipulação dos dados de teste na avaliação final do modelo, quanto para manipular os *folds* na etapa de validação cruzada, de modo a evitar vazamento de dados em quaisquer dessas etapas.
 
-Diante desse panorama, decidimos encapsular todos esses procedimentos numa classe, denominada **DataFitAndTransform** (seção 3.1 do código). Em bom tecniquês: um pipeline. O foco era garantir a consistência das transformações aplicadas aos dados, de modo a que os dados de entrada fossem devidamente transformados e padronizados antes de serem utilizados nos vários modelos de *machine learning*.
+Diante desse panorama, decidimos encapsular todos esses procedimentos numa classe, denominada **DataFitAndTransform** (seção 6.1 do código). Em bom tecniquês: um pipeline. O foco era garantir a consistência das transformações aplicadas aos dados, de modo a que os dados de entrada fossem devidamente transformados e padronizados antes de serem utilizados nos vários modelos de *machine learning*.
 
 A classe tem os seguintes métodos principais:
 
@@ -259,26 +255,24 @@ Seguem alguns aspectos relativos ao trabalho de busca do algoritmo adequado.
 
 ## 7.1. Divisão da base de dados em treino, validação e teste
 
-A base de dados disponível, contendo 381.109 registros, foi dividida em três conjuntos (seção 1.2 do código):
+A base de dados disponível, contendo 381.109 registros, foi dividida em três conjuntos (seção 6.2 do código):
 
 - base de teste, com 127024 registros, de modo a reproduzir a situação descrita pelo cliente.
-- base de treino, com 203268 registros, representando 80% dos dados restantes.
+- base de treino, com 201439 registros, representando 80% dos dados restantes.
 - base de validação, com 50817 registros, representando 20% dos dados restantes.
 
-A base de teste permaneceu reservada para uso na avaliação final do algoritmo de ML resultante da presente pesquisa (seção 10 do código). A base de treino foi utilizada para treinar as transformações das *features* (seção 3 do código). As bases de treino e validação foram utilizadas para validação direta dos algoritmos candidatos (seção 8.1 do código). Posteriormente, as duas bases foram utilizadas em conjunto (ou seja, com 254085 registros) para fins de validação cruzada dos referidos algoritmos (seção 8.2 do código).
+A base de teste permaneceu reservada para uso na avaliação final do algoritmo de ML resultante da presente pesquisa (seção 10 do código). Já as bases de treino e validação foram utilizadas para validação direta dos algoritmos candidatos (seção 8.1 do código). Posteriormente, as duas bases foram utilizadas em conjunto (ou seja, com 252256 registros) para fins de validação cruzada dos referidos algoritmos (seção 8.2 do código).
 
 
 ## 7.2. Tratamento de classes desbalanceadas
 
-A avaliação preliminar da variável alvo "response" indicou tratar-se de um caso de classificação na presença de classes desbalanceadas, estando a classe de interesse presente em apenas 12,2% dos registros (seção 1.3.4 do código).
+A avaliação preliminar da variável alvo "response" indicou tratar-se de um caso de classificação na presença de classes desbalanceadas, estando a classe de interesse presente em apenas 12,26% dos registros (seção 1.3.4 do código).
 
 ![banner](img/inbalanced_data.png)
 
 A existência de desequilíbrio entre as classes resulta na redução do desempenho dos modelos de ML, isso porque os modelos pressupõem o equilíbrio e acabam valorando como mais importante a classe mais numerosa, levando a resultado indesejado na otimização do modelo.
 
 Para lidar com dados desbalanceados há diversas técnicas que melhoram o desempenho dos modelos de ML (ver Lewinson<sup>3</sup>, pg. 562-572). Para o presente trabalho, foi aplicada a técnica híbrida combinando SMOTE (ou "<i>Synthetic Minority Over-sampling Technique</i>") e Tomek Links (seção 6.3 do código). Em resumo, SMOTE gera novas instâncias sintéticas da classe minoritária, enquanto Tomek ajuda a delinear as fronteiras entre as classes ao remover instâncias da classe majoritária que estejam mais próximas das instâncias da classe minoritária.
-
-Observar também que o algoritmo adotado, *Logistic Regression*, permite o uso do parâmetro *class_weight='balanced'*, também com o intuito de dar tratamento à questão das classes desbalanceadas. Neste trabalho, foram usados em conjunto tanto esse parâmetro *class_weight* quanto o SMOTE-Tomek. Como sugestão de próximo teste, poderia ser verificado o desempenho de se utilizar um ou outro isoladamente.
 
 
 ## 7.3. Indicadores de desempenho - Precision & Recall
@@ -317,47 +311,48 @@ Para avaliação dos modelos e escolha do mais adequado, as bases de treino e va
   </tr>
   <tr>
     <td align="center">Logistic Reg.</td>
-    <td align="center">26.34%</td>
-    <td align="center">92.54%</td>
-    <td align="center">41.01%</td>
-    <td align="center">5743</td>
+    <td align="center">27.55%</td>
+    <td align="center">92.03%</td>
+    <td align="center">42.41%</td>
+    <td align="center">5762</td>
   </tr>
   <tr>
     <td align="center">XGBoost</td>
-    <td align="center">28.38%</td>
-    <td align="center">70.66%</td>
-    <td align="center">40.50%</td>
-    <td align="center">4385</td>
+    <td align="center">28.66%</td>
+    <td align="center">69.38%</td>
+    <td align="center">40.57%</td>
+    <td align="center">4344</td>
   </tr>
   <tr>
     <td align="center">KNN</td>
-    <td align="center">30.78%</td>
-    <td align="center">42.17%</td>
-    <td align="center">35.59%</td>
-    <td align="center">2617</td>
-  </tr>
-  <tr>
-    <td align="center">Random Forest</td>
-    <td align="center">30.55%</td>
-    <td align="center">19.56%</td>
-    <td align="center">23.85%</td>
-    <td align="center">1214</td>
-  </tr>
-  <tr>
-    <td align="center">LightGBM</td>
-    <td align="center">22.41%</td>
-    <td align="center">14.92%</td>
-    <td align="center">17.91%</td>
-    <td align="center">926</td>
+    <td align="center">34.30%</td>
+    <td align="center">50.93%</td>
+    <td align="center">41.00%</td>
+    <td align="center">3189</td>
   </tr>
   <tr>
     <td align="center">ExtraTrees</td>
-    <td align="center">33.86%</td>
-    <td align="center">12.70%</td>
-    <td align="center">18.47%</td>
-    <td align="center">788</td>
+    <td align="center">33.55%</td>
+    <td align="center">13.34%</td>
+    <td align="center">19.09%</td>
+    <td align="center">835</td>
+  </tr>
+  <tr>
+    <td align="center">LightGBM</td>
+    <td align="center">24.21%</td>
+    <td align="center">10.05%</td>
+    <td align="center">14.20%</td>
+    <td align="center">629</td>
+  </tr>
+  <tr>
+    <td align="center">Random Forest</td>
+    <td align="center">34.22%</td>
+    <td align="center">9.82%</td>
+    <td align="center">15.26%</td>
+    <td align="center">615</td>
   </tr>
 </table>
+
 
 Para confirmação do desempenho avaliado pelo procedimento acima, as bases de treino e validação foram utilizadas em conjunto para fins de validação cruzada dos referidos algoritmos (seção 8.2 do código). A tabela traz os resultados, com média e desvio padrão.
 
@@ -371,47 +366,48 @@ Para confirmação do desempenho avaliado pelo procedimento acima, as bases de t
   </tr>
   <tr>
     <td align="center">Logistic Reg.</td>
-    <td align="center">26.52% ± 0.08%</td>
-    <td align="center">93.13% ± 0.43%</td>
-    <td align="center">41.28% ± 0.12%</td>
-    <td align="center">5789</td>
+    <td align="center">26.93% ± 0.2%</td>
+    <td align="center">91.22% ± 0.3%</td>
+    <td align="center">41.58% ± 0.3%</td>
+    <td align="center">4469</td>
   </tr>
   <tr>
     <td align="center">XGBoost</td>
-    <td align="center">27.90% ± 0.55%</td>
-    <td align="center">72.10% ± 1.8%</td>
-    <td align="center">40.22% ± 0.53%</td>
-    <td align="center">4482</td>
+    <td align="center">27.94% ± 0.4%</td>
+    <td align="center">71.65% ± 0.5%</td>
+    <td align="center">40.20% ± 0.4%</td>
+    <td align="center">3510</td>
   </tr>
   <tr>
     <td align="center">KNN</td>
-    <td align="center">30.83% ± 0.33%</td>
-    <td align="center">41.53% ± 0.52%</td>
-    <td align="center">35.39% ± 0.39%</td>
-    <td align="center">2582</td>
+    <td align="center">32.66% ± 0.4%</td>
+    <td align="center">52.07% ± 0.6%</td>
+    <td align="center">40.14% ± 0.4%</td>
+    <td align="center">2551</td>
   </tr>
   <tr>
     <td align="center">LightGBM</td>
-    <td align="center">21.19% ± 1.27%</td>
-    <td align="center">16.43% ± 2.97%</td>
-    <td align="center">18.40% ± 2.14%</td>
-    <td align="center">1021</td>
+    <td align="center">22.72% ± 1.3%</td>
+    <td align="center">17.95% ± 1.9%</td>
+    <td align="center">19.98% ± 1.2%</td>
+    <td align="center">879</td>
   </tr>
   <tr>
     <td align="center">ExtraTrees</td>
-    <td align="center">33.08% ± 0.72%</td>
-    <td align="center">11.83% ± 0.37%</td>
-    <td align="center">17.43% ± 0.43%</td>
-    <td align="center">735</td>
+    <td align="center">32.99% ± 0.7%</td>
+    <td align="center">13.35% ± 0.2%</td>
+    <td align="center">19.00% ± 0.3%</td>
+    <td align="center">654</td>
   </tr>
   <tr>
     <td align="center">Random Forest</td>
-    <td align="center">34.21% ± 1.51%</td>
-    <td align="center">11.04% ± 2.83%</td>
-    <td align="center">16.47% ± 2.87%</td>
-    <td align="center">686</td>
+    <td align="center">33.67% ± 1.1%</td>
+    <td align="center">9.94% ± 1.5%</td>
+    <td align="center">15.30% ± 1.9%</td>
+    <td align="center">487</td>
   </tr>
 </table>
+
 
 Os desempenhos dos modelos de ML após teste e validação podem ser também avaliados por meio da comparação dos gráficos de ganho cumulativo.
 
@@ -423,19 +419,10 @@ Os desempenhos dos modelos de ML após teste e validação podem ser também ava
 
 CONCLUSÃO: em razão dos resultados dos testes acima, o algoritmo LOGISTIC REGRESSION foi a nossa escolha para uso no presente trabalho, haja vista ter apresentado a maior quantidade de casos de <i>True Positive</i> (TP), o que se reflete nos bons resultados dos indicadores F1, <i>Precision</i> e, notadamente, <i>Recall</i>.
 
-OBSERVAÇÃO E SUGESTÃO DE PRÓXIMO TESTE: apesar de os indicadores apontarem *Logistic Regression* como a melhor escolha e *Extra Trees* como uma das menos adequadas, ao ampliar o gráfico de comparação das curvas, obtém-se informação que parece contraditória, conforme figura abaixo.
-
-<table align="center">
-<tr><td>
-<img src="img/ml_comparison_detail.png" align="center">
-</td></tr>
-</table>
-
-Assim, a título de próximo teste, caberia comparar os desempenhos de negócio tanto do algoritmo *Logistic Regression* quanto do *Extra Trees*.
 
 # 8. RESULTADO-I: PRINCIPAIS <i>INSIGHTS</i> DE NEGÓCIO
 
-Conforme apresentado no tópico 4.1 acima, o produto final inclui a elaboração de insights obtidos a partir da análise dos dados disponíveis. Trata-se de aspecto muito importante, por dar base para discussão de novas estratégias de vendas. 
+Conforme apresentado no tópico 4.1, o produto final inclui a elaboração de insights obtidos a partir da análise dos dados disponíveis. Trata-se de aspecto muito importante, por dar base para discussão de novas estratégias de vendas. 
 
 Em se tratando de analisar o mercado de seguros, é importante investigar quais são os eventos que interferem no desempenho do negócio. No mapa mental abaixo são apresentados alguns fenômenos capazes de alterar a demanda. Tem-se:
 
@@ -450,12 +437,12 @@ Em se tratando de analisar o mercado de seguros, é importante investigar quais 
 No caso do presente projeto, com base na investigação dos dados disponíveis (tópico 5.3 do código), têm-se os seguintes insights mais interessantes:
 
 ## Insight nº 1: O gênero do consumidor não tem influência no interesse por seguro.
-Hipótese <b>FALSA</B>: Os dados mostram haver um percentual maior de aceitação para o contrato de seguro de automóvel por parte da população masculina, de 13,82% dos homens, contra apenas 10,38% das mulheres. Além disso, da população testada, a masculina é um pouco maior (109.828 homens ao lado de 93.440 mulheres). Combinando esses números, tem-se um total de 15.181 homens interessados em seguros, e apenas 9.698 mulheres interessadas.
+Hipótese <b>FALSA</B>: Os dados mostram haver um percentual maior de aceitação para o contrato de seguro de automóvel por parte da população masculina, de 13,84% dos homens, contra apenas 10,39% das mulheres. Além disso, a população masculina é um pouco maior (206 mil homens ao lado de 175 mil mulheres). Combinando esses números, tem-se um total de 28.522 homens interessados em seguros, e apenas 18.184 mulheres interessadas.
 
 Conclui-se assim que, contrariamente à hipótese inicial, o gênero da clientela tem algum impacto na demanda por seguros.
 
 ## Insight nº 2: O interesse por contratos de seguro aumenta com o aumento da idade
-Hipótese <b>VERDADEIRA</B>: Os números indicam que no grupo de pessoas entre 21 e 25 anos, apenas 3,6% delas estão interessadas em contratar seguro de automóvel. Por outro lado, 21,5% das pessoas entre 39 e 47 anos demonstraram interesse na compra do seguro.
+Hipótese <b>VERDADEIRA</B>: Os números indicam que no grupo de pessoas entre 21 e 25 anos, apenas 3,7% delas estão interessadas em contratar seguro de automóvel. Por outro lado, 27,2% das pessoas entre 39 e 47 anos demonstraram interesse na compra do seguro.
 
 Essas relações de interesse em função da idade se refletem nas distribuições da variável "age" versus "response", conforme mostra o gráfico.
 
@@ -464,9 +451,9 @@ Essas relações de interesse em função da idade se refletem nas distribuiçõ
 Conclui-se assim que, de fato, o interesse por contratos de seguro aumenta com o passar da idade.
 
 ## Insight nº 3: As pessoas já possuidoras de contrato de seguros junto a outras companhias tendem a ter menor propensão a se tornarem nossas clientes.
-Hipótese <b>VERDADEIRA</B>: Na base de dados disponível, tem-se que 46% das pessoas já possuiam contrato de seguro veicular, e 99,9% dessas pessoas responderam negativamente à pesquisa de interesse na oferta de seguro automotivo.
+Hipótese <b>VERDADEIRA</B>: Na base de dados disponível, tem-se que 45,8% das pessoas já possuiam contrato de seguro veicular, e 99,91% dessas pessoas responderam negativamente à pesquisa de interesse na oferta de seguro automotivo.
 
-Por outro lado, dos demais 54% de pessoas que não possuem seguro veicular, tem-se que 22,56% delas têm interesse no novo produto.
+Por outro lado, dos demais 54,2% de pessoas que não possuem seguro veicular, tem-se que 22,55% delas têm interesse no novo produto.
 
 <table align="center">
     <tr>
@@ -480,8 +467,8 @@ Por outro lado, dos demais 54% de pessoas que não possuem seguro veicular, tem-
     <tr>
         <td rowspan=2><b>previously_insured</b></td>
         <td><b>0</b></td>
-        <td align="center">77,44%</td>
-        <td align="center">22,56%</td>
+        <td align="center">77,45%</td>
+        <td align="center">22,55%</td>
     </tr>
     <tr>
         <td><b>1</b></td>
@@ -502,34 +489,35 @@ Hipótese <b>FALSA</B>: Os dados mostram que os clientes com carros mais novos e
   </tr>
   <tr>
     <td align="center">bellow_1_year</td>
-    <td align="center">12,88%</td>
-    <td align="center">87,12%</td>
+    <td align="center">12,86%</td>
+    <td align="center">87,14%</td>
   </tr>
   <tr>
     <td align="center">between_1_2_years</td>
-    <td align="center">25,72%</td>
-    <td align="center">74,28%</td>
+    <td align="center">25,71%</td>
+    <td align="center">74,29%</td>
   </tr>
   <tr>
     <td align="center">over_2_years</td>
-    <td align="center">29,46%</td>
-    <td align="center">70,54%</td>
+    <td align="center">29,45%</td>
+    <td align="center">70,55%</td>
   </tr>
 </table>
+
 
 Conclui-se assim que, contrariamente à hipótese original, quanto mais novo o veículo, menor o interesse pelo seguro automotivo.
 
 
 # 9. RESULTADO-II: IMPACTO NA CAMPANHA DE VENDAS
 
-Conforme apresentado no tópico 4.1 acima, o produto final contratado prevê a resposta a três questões relativas à campanha de vendas a ser implantada pela empresa cliente. Para tanto, são apresentados os resultados do processamento sobre os dados de teste, seguindo-se as questões e respectivas respostas.
+Conforme apresentado no tópico 4.1, o produto final contratado prevê a resposta a três questões relativas à campanha de vendas a ser implantada pela empresa cliente. Para tanto, são apresentados os resultados do processamento sobre os dados de teste, seguindo-se as questões e respectivas respostas.
 
 ## 9.1. Resultado da aplicação do modelo aos dados de teste
 
 A ideia é comparar os resultados da estratégia de vendas com e sem o uso de <i>machine learning</i>. 
 
 BASE DE TESTE:
-A base de dados de teste contém 127 mil registros (ou 127024), dos quais 15625 (12.30%) referem-se a pessoas interessadas na compra do produto (classe-1). Observar que, devido à randomização dos dados, o valor de 12.30% dessa amostra tem pequena diferença em relação ao valor teórico de 12.23% originalmente esperado.
+A base de dados de teste contém 127 mil registros (ou 127024), dos quais 15671 (12.34%) referem-se a pessoas interessadas na compra do produto (classe-1). Observar que, devido à randomização dos dados, o valor de 12.34% dessa amostra tem pequena diferença em relação aos 12.26% originalmente esperados.
 
 <table align="center">
   <tr>
@@ -542,16 +530,16 @@ A base de dados de teste contém 127 mil registros (ou 127024), dos quais 15625 
   </tr>
   <tr>
     <td>População interessada</td>
-    <td align="center">15625 (12.30%)</td>
+    <td align="center">15671 (12.34%)</td>
   </tr>
   <tr>
     <td>Receita total (health-insurance)</td>
-    <td align="center">$ 493.804.649,00</td>
+    <td align="center">$ 495.457.449,00</td>
   </tr>
 </table>
 
 
-Nos dados acima, a receita total de $ 494 milhões refere-se ao somatório dos valores conhecidos, quais sejam, os prêmio de seguro-saúde dos 15625 registros da classe-1. Para fins de avaliação, essa informação será tomada como estimativa da receita a ser auferida com a venda do novo seguro automotivo.
+Nos dados acima, a receita total de $ 495 milhões refere-se ao somatório dos valores conhecidos, quais sejam, os prêmio de seguro-saúde dos 15671 registros da classe-1. Para fins de avaliação, essa informação será tomada como estimativa da receita a ser auferida com a venda do novo seguro automotivo.
 
 As questões de negócio e os resultados alcançados são apresentados nos tópicos abaixo, podendo ser resumidas no seguinte gráfico:
 
@@ -561,25 +549,25 @@ As questões de negócio e os resultados alcançados são apresentados nos tópi
 
 ## 9.2. Questão-1: Com 20 mil ligações, qual deverá ser a porcentagem de clientes interessados no produto?
 
-No caso **sem o uso de ML**, os 20 mil registros são escolhidos aleatoriamente. O cálculo nessas condições resultou em 2467 pessoas interessadas (12.34% de 20 mil), representando receita de $ 77.227.245,00.
+No caso <b>sem o uso de ML</b>, os 20 mil registros são escolhidos aleatoriamente. O cálculo nessas condições resultou em 2407 pessoas interessadas (12.04% de 20 mil), representando receita de $ 75.612.858,00.
 
-Ao se **fazer uso do modelo de ML** para ordenamento inteligente da lista de clientes, foi possível encontrar 5959 pessoas interessadas (29.8% de 20 mil), representando receita de $ 217.376.323,00.
+Ao se <b>fazer uso do modelo de ML</b> para ordenamento inteligente da lista de clientes, foi possível encontrar 6921 pessoas interessadas (34.6% de 20 mil), representando receita de $ 234.348.974,00.
 
-Resultado: incremento de 141.5% no número de contratações, e com incremento de 181.5% na receita.
+Resultado: incremento de 187.5% no número de contratações, e com o triplo da receita (+210%).
 
 
 ## 9.3. Questão-2: E no caso de 40 mil ligações?
 
-No caso **sem o uso de ML**, os 40 mil registros são escolhidos aleatoriamente. O cálculo nessas condições resultou em 4953 pessoas interessadas (12.38% de 40 mil), representando receita de $ 155.421.139,00.
+No caso <b>sem o uso de ML</b>, os 40 mil registros são escolhidos aleatoriamente. O cálculo nessas condições resultou em 4946 pessoas interessadas (12.36% de 40 mil), representando receita de $ 157.742.884,00.
 
-Ao se **fazer uso do modelo de ML** para ordenamento inteligente da lista de clientes, foi possível encontrar 11543 pessoas interessadas (28.86% de 40 mil), representando receita de $ 389.342.460,00.
+Ao se <b>fazer uso do modelo de ML</b> para ordenamento inteligente da lista de clientes, foi possível encontrar 12346 pessoas interessadas (30.86% de 40 mil), representando receita de $ 400.301.534,00.
 
-Resultado: incremento de 133.1% no número de contratações, e com incremento de 150.5% na receita.
+Resultado: incremento de 149.6% no número de contratações, e com incremento de 154% na receita.
 
 
 ## 9.4. Questão-3: Quantas ligações serão necessárias para contactar 80% dos clientes interessados?
 
-Nesse caso, os dados indicam a necessidade de uma amostra de 43649 pessoas, representando 34.36% do total de 127024.
+Nesse caso, os dados indicam a necessidade de uma amostra de 40922 pessoas, representando 32.22% do total de 127024.
 
 
 # 10. RESULTADO-III: PLANILHA EXCEL INTELIGENTE
@@ -628,5 +616,4 @@ Em tempo, o presente texto na versão em português foi preparado sem a ajuda de
 3. Livro: "Python for Finance Cookbook", Erik Lewinson, 2ª edição, 2022.
 4. Livro: "Machine Learning Bootcamp - Build a portfolio of real-life projects", Alexey Grigorev, 2021
 5. Documentação da biblioteca Flask, endereço https://flask.palletsprojects.com/en/2.3.x/api/#flask.Blueprint.route, consultada em 08-fevereiro-2024.
-6. Agradeço ao Éderson André de Souza pelo incentivo e pela sugestão de ajuste mais rigoroso dos parâmetros das funções RBF, de modo a evitar possível vazamento de dados, conforme comentários nessa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_mais-um-projeto-de-ci%C3%AAncia-de-dados-conclu%C3%ADdo-activity-7240429424578359297-35bd?utm_source=share&utm_medium=member_desktop).
 
