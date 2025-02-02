@@ -8,7 +8,7 @@
 #       It performs all the data clearing, encodings & transformation needed.
 #
 #                                                        First date.: 2024.05.21
-# manoelmendonca@hotmail.com                             Last update: 2024.09.07
+#                                                        Last update: 2024.09.07
 #-------------------------------------------------------------------------------
 
 import pickle

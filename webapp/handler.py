@@ -5,7 +5,7 @@
 # Goal: this ML-API receives/solves a request to perform a forecast for one item
 #
 #                                                        First date.: 2024.05.21
-# manoelmendonca@hotmail.com                             Last update: 2024.09.07
+#                                                        Last update: 2024.09.07
 #-------------------------------------------------------------------------------
 
 import os
