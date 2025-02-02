@@ -159,7 +159,7 @@ The gamma values can be obtained through optimization; however, in this case, th
 
 ![banner](img/variavel_age_rbf.png)
 
-The procedure yielded good results, as in the correlations evaluation phase (section 5.1.1 of the code) and in the variable importance testing phase (section 7), "age_rbf_24" and "age_rbf_44" proved to be important. For more on this, see our [post](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-radialbasisfunction-activity-7234892553542672385-gukQ?utm_source=share&utm_medium=member_desktop). At the time of the post, it seemed appropriate to use only the "age_rbf_43" variable, as well as modes centered in 23 and 43. With the progress of the work and thanks to the suggestion presented<sup>6</sup>, the result was achieved through the use of both variables and adjustments to the modes.
+The procedure yielded good results, as in the correlations evaluation phase (section 5.1.1 of the code) and in the variable importance testing phase (section 7), "age_rbf_24" and "age_rbf_44" proved to be important. Initially, it seemed appropriate to use only the "age_rbf_43" variable, as well as modes centered in 23 and 43. With the progress of the work and thanks to the suggestion presented<sup>6</sup>, the result was achieved through the use of both variables and adjustments to the modes.
 
 In the case of these variables created using RBF, since they make use of information from the entire distribution, it was necessary to ensure that no data leakage occurred. The modes were defined by observing the training data, and the result was then applied to the validation and test sets. This procedure was embedded in an object created for this purpose (the DataFitAndTransform class, section 3.1 of the code) and used in the cross-validation tests and the final test of the model.
 
@@ -217,7 +217,7 @@ for i in range( len( cols_selected_boruta ) ):
     ...
 ```
 
-This gradual exclusion procedure (or *Recursive Feature Elimination*) was repeatedly applied to the best-performing model—LogisticRegression—in order to improve it by removing variables that did not contribute to the result, or even worsened it. Thus, in the first version of the notebook, the variables 'vehicle_age_over_2_years' and 'vehicle_age_between_1_2_years' were excluded, and in the current version two, 'age', 'age_rbf_44', and 'vehicle_age_over_2_years' were excluded, leading to improvements in the Precision, Recall, and F1 indicators. For more on this, see our [post](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-featureselection-activity-7236360978865545219--TO_?utm_source=share&utm_medium=member_desktop).
+This gradual exclusion procedure (or *Recursive Feature Elimination*) was repeatedly applied to the best-performing model—LogisticRegression—in order to improve it by removing variables that did not contribute to the result, or even worsened it. Thus, in the first version of the notebook, the variables 'vehicle_age_over_2_years' and 'vehicle_age_between_1_2_years' were excluded, and in the current version two, 'age', 'age_rbf_44', and 'vehicle_age_over_2_years' were excluded, leading to improvements in the Precision, Recall, and F1 indicators.
 
 ## 6.6. Data Transformation and Adjustment Pipeline
 
@@ -293,7 +293,6 @@ From the universe of records that truly belong to class-1 (TP + FN), it is possi
 
 Similarly, from the set of instances classified by the machine as class-1 (TP + FP), it is possible to calculate how precise the machine was, which is the *Precision* metric.
 
-On this topic, we prepared two posts: [this one](https://www.linkedin.com/posts/manoelmendonca-eng-adv_precision-recall-activity-7233824260442476544-szPD?utm_source=share&utm_medium=member_desktop) and [this one](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-precision-activity-7235632443515392001-DwBK?utm_source=share&utm_medium=member_desktop).
 
 <table align="center">
 <tr><td>
@@ -628,4 +627,3 @@ Additionally, the original Portuguese version of this text was prepared without 
 3. Book: *Python for Finance Cookbook*, Erik Lewinson, 2nd edition, 2022.
 4. Book: *Machine Learning Bootcamp - Build a portfolio of real-life projects*, Alexey Grigorev, 2021.
 5. Flask library documentation, available at https://flask.palletsprojects.com/en/2.3.x/api/#flask.Blueprint.route, accessed on February 8, 2024.
-6. I would like to thank everyone who provided improvement suggestions.

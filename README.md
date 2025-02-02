@@ -156,7 +156,7 @@ Os valores de gamma podem ser obtidos por otimização, no entanto, no presente 
 
 ![banner](img/variavel_age_rbf.png)
 
-O procedimento trouxe bom resultado, visto que, tanto na etapa de avaliação de correlações (seção 5.1.1 do código) quanto na etapa de teste de importância das variáveis (seção 7), "age_rbf_24" e "age_rbf_44" mostraram-se importantes. Sobre isso, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-radialbasisfunction-activity-7234892553542672385-gukQ?utm_source=share&utm_medium=member_desktop). À epoca da postagem, parecia apropriado utilizar apenas a variável "age_rbf_43", bem assim as modas em 23 e 43. Com a evolução do trabalho e graças a sugestão apresentada<sup>6</sup>, o resultado foi dado pela utilização de ambas as variáveis e com ajuste nas modas.
+O procedimento trouxe bom resultado, visto que, tanto na etapa de avaliação de correlações (seção 5.1.1 do código) quanto na etapa de teste de importância das variáveis (seção 7), "age_rbf_24" e "age_rbf_44" mostraram-se importantes. Inicialmente, parecia apropriado utilizar apenas a variável "age_rbf_43", bem assim as modas em 23 e 43. Com a evolução do trabalho e graças a sugestão apresentada<sup>6</sup>, o resultado foi dado pela utilização de ambas as variáveis e com ajuste nas modas.
 
 No caso dessas variáveis criadas usando RBF, por fazerem uso de informação de toda a distribuição, foi necessário cuidar para a não ocorrência de <i>data leakage</i>. A definição das modas foi realizada pela observação dos dados de treino, a partir daí aplicando o resultado nos conjuntos de validação e teste. Esse procedimento foi embutido em um objeto criado para essa finalidade (classe DataFitAndTransform, seção 3.1 do código) e usado nos testes de validação cruzada e no teste final do modelo.
 
@@ -214,7 +214,7 @@ for i in range( len( cols_selected_boruta ) ):
     ...
 ```
 
-Esse procedimento de exclusão gradual (ou "<i>Recursive Feature Elimination</i>") foi aplicado repetidamente ao modelo de melhor desempenho - LogisticRegression - de modo a aprimorá-lo pela retirada de variáveis que não contribuiam para o resultado, ou mesmo que o pioravam. Desse modo, na primeira versão do *notebook* foram excluídas as variáveis "vehicle_age_over_2_years" e "vehicle_age_between_1_2_years", e na atual versão dois foram excluídas "age", "age_rbf_44" e "vehicle_age_over_2_years", levando a melhoria dos indicadores <i>Precision</i>, <i>Recall</i> e F1. Sobre esse assunto, veja nossa [postagem](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-featureselection-activity-7236360978865545219--TO_?utm_source=share&utm_medium=member_desktop).
+Esse procedimento de exclusão gradual (ou "<i>Recursive Feature Elimination</i>") foi aplicado repetidamente ao modelo de melhor desempenho - LogisticRegression - de modo a aprimorá-lo pela retirada de variáveis que não contribuiam para o resultado, ou mesmo que o pioravam. Desse modo, na primeira versão do *notebook* foram excluídas as variáveis "vehicle_age_over_2_years" e "vehicle_age_between_1_2_years", e na atual versão dois foram excluídas "age", "age_rbf_44" e "vehicle_age_over_2_years", levando a melhoria dos indicadores <i>Precision</i>, <i>Recall</i> e F1.
 
 ## 6.6. Fluxo para transformação e ajuste de dados (*pipeline*)
 
@@ -290,8 +290,6 @@ Em resumo, na base de dados deste projeto, 12.26% dos registros se referem à cl
 A partir do universo de registros realmente pertencentes à classe-1 (TP + FN) é possível calcular o percentual de instâncias da classe-1 efetivamente descobertas (ou recuperadas) pela máquina, sendo esse o indicador <i>Recall</i>.
 
 De modo semelhante, do conjunto de instâncias classificadas pela máquina como da classe-1 (TP + FP) é possível calcular quão precisa foi a máquina, sendo esse o indicador <i>Precision</i>.
-
-Sobre o assunto, preparamos duas postagens: [essa](https://www.linkedin.com/posts/manoelmendonca-eng-adv_precision-recall-activity-7233824260442476544-szPD?utm_source=share&utm_medium=member_desktop) e [essa outra](https://www.linkedin.com/posts/manoelmendonca-eng-adv_datascience-machinelearning-precision-activity-7235632443515392001-DwBK?utm_source=share&utm_medium=member_desktop).
 
 
 <table align="center">
@@ -624,9 +622,7 @@ Em tempo, o presente texto na versão em português foi preparado sem a ajuda de
 # 14. REFERÊNCIAS
 
 1. Sítio do Kaggle, endereço https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction, consultado em agosto-2024.
-2. Livro: "Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow", Aurelién Géron, 3ª edição, 2023.
-3. Livro: "Python for Finance Cookbook", Erik Lewinson, 2ª edição, 2022.
-4. Livro: "Machine Learning Bootcamp - Build a portfolio of real-life projects", Alexey Grigorev, 2021
+2. Livro: *Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow*, Aurelién Géron, 3ª edição, 2023.
+3. Livro: *Python for Finance Cookbook*, Erik Lewinson, 2ª edição, 2022.
+4. Livro: *Machine Learning Bootcamp - Build a portfolio of real-life projects*, Alexey Grigorev, 2021
 5. Documentação da biblioteca Flask, endereço https://flask.palletsprojects.com/en/2.3.x/api/#flask.Blueprint.route, consultada em 08-fevereiro-2024.
-6. Agradeço a todos que apresentaram sugestões de melhoria.
-
