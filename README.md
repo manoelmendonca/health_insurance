@@ -9,7 +9,17 @@ ESTRATÉGIA DE VENDA-CRUZADA DE SEGUROS<br>
 
 # 1. INTRODUÇÃO
 
-O que é este trabalho? O desafio é criar um método inteligente para selecionar os clientes mais propensos a comprar um novo produto de uma empresa seguradora. Trata-se portanto da análise de um caso de negócio, com o foco em aumentar a receita da empresa, bem assim atender as principais questões da equipe de negócio.
+Este relatório descreve os detalhes do projeto de Ciência de Dadosd referente à criação de um **Algoritmo de Classificação** utilizando *machine learning* para identificação dos clientes com maior propensão a adquirir um novo produto da empresa cliente.
+
+Em resumo, neste projeto fizemos uso das seguintes ferramentas e técnicas:
+
+- **Ferramentas**: VS-Code, Jupyter Notebook, Mini Conda, GitHub, GPT-4
+- **Programação & Bibliotecas**: Python, Pandas, Numpy, Scikit-Learn, Matplotlib, Seaborn
+- **Modelos de Machine Learning para Classificação**: Logistic Regression, XGBoost, KNN, Random Forest, Extra Trees e LightGBM
+- **Seleção de Features & Validação**: Boruta, ExtraTrees, LightGBM, *Recursive Feature Elimination*
+- **Deployment & API**: Flask API, hospedagem [Render.com](https://render.com/), MS-Excel & Cliente VBA.
+
+Quanto ao objetivo do trabalho, o desafio é criar um método inteligente para selecionar os clientes mais propensos a comprar um novo produto de uma empresa seguradora. Trata-se portanto da análise de um caso de negócio, com o foco em aumentar a receita da empresa, bem assim atender as principais questões da equipe de negócio.
 
 Conforme será apresentado ao longo do trabalho, com o uso do presente projeto foi possível aumentar o desempenho da campanha de vendas em aproximadamente 141%, com aumento estimado de mais de 180% no faturamento, representando incremento absoluto no faturamento da ordem de $ 140 milhões.
 

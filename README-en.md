@@ -2,14 +2,24 @@
 INSURANCE CROSS-SELLING STRATEGY<br>
 </h1>
 
-<h6>- <a href="/">VERSÃO EM PORTUGUÊS</a></h6>
+<h6>- <a href="README.md">VERSÃO EM PORTUGUÊS</a></h6>
 
 ![banner](img/Seguro_automovel_01.png)
 
 
-# 1. INTRODUCTION
+# 1. INTRODUCTION  
 
-What is this project about? The challenge is to create an intelligent method to select the customers most likely to purchase a new product from an insurance company. This is therefore a business case analysis, with a focus on increasing the company’s revenue as well as addressing the key concerns of the business team.
+This report describes the details of the Data Science project related to the development of a **Classification Algorithm** using *machine learning* to identify customers with the highest propensity to purchase a new product from the client company.  
+
+In summary, in this project, we utilized the following tools and techniques:  
+
+- **Tools**: VS-Code, Jupyter Notebook, Mini Conda, GitHub, GPT-4  
+- **Programming & Libraries**: Python, Pandas, Numpy, Scikit-Learn, Matplotlib, Seaborn  
+- **Machine Learning Models for Classification**: Logistic Regression, XGBoost, KNN, Random Forest, Extra Trees, and LightGBM  
+- **Feature Selection & Validation**: Boruta, ExtraTrees, LightGBM, *Recursive Feature Elimination*  
+- **Deployment & API**: Flask API, hosting on [Render.com](https://render.com/), MS-Excel & Client VBA  
+
+Regarding the project objective, the challenge is to create an intelligent method to select customers most likely to purchase a new product from an insurance company. Therefore, this is a business case analysis focused on increasing the company’s revenue while also addressing key concerns of the business team.  
 
 As will be presented throughout the project, using this approach, it was possible to increase the sales campaign performance by approximately 141%, with an estimated revenue increase of more than 180%, representing an absolute revenue boost of around $140 million.
 
