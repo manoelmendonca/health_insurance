@@ -9,7 +9,7 @@ ESTRATÉGIA DE VENDA-CRUZADA DE SEGUROS<br>
 
 # 1. INTRODUÇÃO
 
-Este relatório descreve os detalhes do projeto de Ciência de Dadosd referente à criação de um **Algoritmo de Classificação** utilizando *machine learning* para identificação dos clientes com maior propensão a adquirir um novo produto da empresa cliente.
+Este relatório descreve os detalhes do projeto de Ciência de Dados referente à criação de um **Algoritmo de Classificação** utilizando *machine learning* para identificação dos clientes com maior propensão a adquirir um novo produto da empresa cliente.
 
 Em resumo, neste projeto fizemos uso das seguintes ferramentas e técnicas:
 

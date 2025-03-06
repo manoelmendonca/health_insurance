@@ -9,14 +9,14 @@ INSURANCE CROSS-SELLING STRATEGY<br>
 
 # 1. INTRODUCTION  
 
-This report describes the details of the Data Science project related to the development of a **Classification Algorithm** using *machine learning* to identify customers with the highest propensity to purchase a new product from the client company.  
+This report describes the details of the Data Science project related to the development of a **Classification Algorithm** using machine learning to identify customers with the highest propensity to purchase a new product from the client company.  
 
 In summary, in this project, we utilized the following tools and techniques:  
 
 - **Tools**: VS-Code, Jupyter Notebook, Mini Conda, GitHub, GPT-4  
 - **Programming & Libraries**: Python, Pandas, Numpy, Scikit-Learn, Matplotlib, Seaborn  
 - **Machine Learning Models for Classification**: Logistic Regression, XGBoost, KNN, Random Forest, Extra Trees, and LightGBM  
-- **Feature Selection & Validation**: Boruta, ExtraTrees, LightGBM, *Recursive Feature Elimination*  
+- **Feature Selection & Validation**: Boruta, ExtraTrees, LightGBM, Recursive Feature Elimination  
 - **Deployment & API**: Flask API, hosting on [Render.com](https://render.com/), MS-Excel & Client VBA  
 
 Regarding the project objective, the challenge is to create an intelligent method to select customers most likely to purchase a new product from an insurance company. Therefore, this is a business case analysis focused on increasing the company’s revenue while also addressing key concerns of the business team.  
@@ -28,7 +28,7 @@ This project is based on a fictional case and uses a dataset from [Kaggle](https
 
 # 2. THE COMPANY AND THE PRODUCT
 
-In this fictional context, the company <b>Insurance All</b> typically provides health insurance to its customers. However, its product team is currently analyzing the possibility of launching a new marketing campaign to offer a different type of coverage to policyholders—automobile insurance.
+In this fictional context, the company **Insurance All** typically provides health insurance to its customers. However, its product team is currently analyzing the possibility of launching a new marketing campaign to offer a different type of coverage to policyholders—automobile insurance.
 
 An insurance contract is defined in Article 757 of the Brazilian Civil Code as an agreement in which a company — the insurer — commits to guaranteeing a specific interest of its client — the insured — against the risk of an event, in exchange for the payment of a premium.
 
